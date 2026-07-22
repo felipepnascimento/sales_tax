@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/application"
+
+INPUTS_DIR = File.expand_path("../inputs", __dir__)
+
+name = ARGV[0]
+abort "Usage: bin/run <input_name>  (e.g. bin/run input_1)" unless name
+
+input_path = File.join(INPUTS_DIR, "#{name}.txt")
+abort "No such input: #{input_path}" unless File.exist?(input_path)
+
+input = File.read(input_path)
+Application.new(input).run
