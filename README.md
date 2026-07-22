@@ -77,7 +77,7 @@ flowchart TD
     Name[item name] --> Categorizer
     Categorizer -->|"book"| Book(":book")
     Categorizer -->|"chocolate"| Food(":food")
-    Categorizer -->|"pill" / "pills"| Medical(":medical")
+    Categorizer -->|"pill or pills"| Medical(":medical")
     Categorizer -->|no keyword match| Other(":other")
 
     Book --> Item
@@ -88,7 +88,7 @@ flowchart TD
     Item["Item<br/>(name, quantity, unit_price, imported, category)"]
 
     Item --> SalesTax
-    SalesTax -->|category exempt?| Exempt{book / food / medical?}
+    SalesTax -->|category exempt?| Exempt{"book, food or medical?"}
     Exempt -->|yes| Zero["0"]
     Exempt -->|no| Amount["round_up(unit_price × 10%) × quantity"]
 ```
