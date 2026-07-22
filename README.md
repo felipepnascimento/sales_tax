@@ -85,7 +85,7 @@ flowchart TD
     Medical --> Item
     Other --> Item
 
-    Item["Item\n(name, quantity, unit_price, imported, category)"]
+    Item["Item<br/>(name, quantity, unit_price, imported, category)"]
 
     Item --> SalesTax
     SalesTax -->|category exempt?| Exempt{book / food / medical?}
@@ -104,8 +104,8 @@ flowchart TD
     Calculator -->|amount_for item| SalesTax
     Calculator -->|amount_for item| ImportDuty
 
-    SalesTax --> SalesTaxAmount["0 if exempt category,\notherwise round_up(price × 10%) × qty"]
-    ImportDuty --> ImportDutyAmount["0 if not imported,\notherwise round_up(price × 5%) × qty"]
+    SalesTax --> SalesTaxAmount["0 if exempt category,<br/>otherwise round_up(price × 10%) × qty"]
+    ImportDuty --> ImportDutyAmount["0 if not imported,<br/>otherwise round_up(price × 5%) × qty"]
 
     SalesTaxAmount --> Sum["+"]
     ImportDutyAmount --> Sum
@@ -121,7 +121,7 @@ Adding `ImportDuty` required no change to `Calculator` at all — only adding it
 ```mermaid
 flowchart TD
     Receipt["receipt: { lines, total_tax, total }"] --> Printer
-    Printer --> L1["'&lt;qty&gt; &lt;name&gt;: &lt;line total&gt;'\n(prefixed with 'imported' when applicable)"]
+    Printer --> L1["'&lt;qty&gt; &lt;name&gt;: &lt;line total&gt;'<br/>(prefixed with 'imported' when applicable)"]
     Printer --> L2["'Sales Taxes: &lt;total_tax&gt;'"]
     Printer --> L3["'Total: &lt;total&gt;'"]
 ```
