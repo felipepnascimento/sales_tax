@@ -1,4 +1,4 @@
-require_relative "nickel_rounding"
+require_relative "../utils/nickel_rounding"
 
 class ImportDuty
   include NickelRounding

@@ -34,4 +34,12 @@ RSpec.describe Item do
   it "raises when unit_price is negative" do
     expect { Item.new(name: "book", quantity: 1, unit_price: -1.0) }.to raise_error(ArgumentError)
   end
+
+  it "raises when unit_price is not a number" do
+    expect { Item.new(name: "book", quantity: 1, unit_price: "abc") }.to raise_error(ArgumentError)
+  end
+
+  it "raises when quantity is not an integer" do
+    expect { Item.new(name: "book", quantity: "abc", unit_price: 1.0) }.to raise_error(ArgumentError)
+  end
 end

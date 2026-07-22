@@ -5,8 +5,8 @@ class Item
 
   def initialize(name:, quantity:, unit_price:, imported: false, category: :other)
     raise ArgumentError, "name can't be blank" if name.nil? || name.strip.empty?
-    raise ArgumentError, "quantity must be greater than zero" unless quantity.to_i > 0
-    raise ArgumentError, "unit_price must be greater than or equal to zero" unless unit_price.to_f >= 0
+    raise ArgumentError, "quantity must be an integer greater than zero" unless quantity.is_a?(Integer) && quantity > 0
+    raise ArgumentError, "unit_price must be a number greater than or equal to zero" unless unit_price.is_a?(Numeric) && unit_price >= 0
     raise ArgumentError, "invalid category: #{category}" unless CATEGORIES.include?(category)
 
     @name = name
