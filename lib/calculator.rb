@@ -1,6 +1,6 @@
 class Calculator
-  def initialize(input)
-    @input = input
+  def initialize(items)
+    @items = items
   end
 
   def receipt
