@@ -45,6 +45,14 @@ All three sample inputs now match the challenge's expected output exactly.
 - Decimal format (e.g. "22,22" vs "22.22") is a `Parser` concern, not `Item`'s: the input regex only accepts dot-decimal numbers, so by the time a value reaches `Item` it's already a real `Float`, not a string to reinterpret.
 - Reasoning for having a single model (`Item`): it's the only object with real domain state that needs data-integrity validation. The tax classes hold no per-instance data — they're behavior-only policy objects (strategy pattern), not models. The receipt is a plain Hash rather than a class because it has a single consumer (`Printer`) today; promoting it to a class without a second consumer would be premature.
 
+## Step 7: End-to-end test coverage and CI
+
+Realized that all existing specs were unit tests, and the only "orchestration" spec (`application_spec.rb`) mocked every collaborator — so nothing actually proved the three sample baskets produce the exact expected receipts, other than manually running `bin/run` and eyeballing the output. Added an integration spec that runs `Application` against the real `inputs/*.txt` files and asserts the printed receipt matches the challenge's expected output character-for-character.
+
+Also added a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs `bundle exec rspec` on every push/PR, so the whole suite — unit and integration — is enforced automatically instead of relying on remembering to run it locally.
+
+Decided not to add more automated tests beyond this for now (e.g. no property-based/fuzz testing of the rounding rule) — the existing unit + integration coverage already exercises every business rule and the exact numbers from the challenge; more tests at this point would be diminishing returns for the challenge's scope.
+
 ## Future Improvements
 
 - Category inference from the item name is keyword-based and not exhaustive. A more robust solution would have the input (or a product catalog) state each item's category explicitly instead of guessing it from text.
