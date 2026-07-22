@@ -1,13 +1,12 @@
 require_relative "nickel_rounding"
 
-class SalesTax
+class ImportDuty
   include NickelRounding
 
-  RATE = 0.10
-  EXEMPT_CATEGORIES = [:book, :food, :medical].freeze
+  RATE = 0.05
 
   def amount_for(item)
-    return 0 if EXEMPT_CATEGORIES.include?(item.category)
+    return 0 unless item.imported
 
     (round_up_to_nearest_nickel(item.unit_price * RATE) * item.quantity).round(2)
   end

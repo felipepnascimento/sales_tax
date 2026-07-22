@@ -31,4 +31,22 @@ RSpec.describe Calculator do
     expect(receipt[:lines].first[:tax]).to eq(0)
     expect(receipt[:lines].first[:total]).to eq(24.98)
   end
+
+  it "combines sales tax and import duty for imported items" do
+    items = [Item.new(name: "bottle of perfume", quantity: 1, unit_price: 47.50, imported: true, category: :other)]
+
+    receipt = Calculator.new(items).receipt
+
+    expect(receipt[:lines].first[:tax]).to eq(7.15)
+    expect(receipt[:lines].first[:total]).to eq(54.65)
+  end
+
+  it "applies import duty even to exempt categories" do
+    items = [Item.new(name: "box of chocolates", quantity: 1, unit_price: 10.00, imported: true, category: :food)]
+
+    receipt = Calculator.new(items).receipt
+
+    expect(receipt[:lines].first[:tax]).to eq(0.50)
+    expect(receipt[:lines].first[:total]).to eq(10.50)
+  end
 end

@@ -6,7 +6,8 @@ class Printer
   def print
     @receipt[:lines].each do |line|
       item = line[:item]
-      puts "#{item.quantity} #{item.name}: #{format_money(line[:total])}"
+      name = item.imported ? "imported #{item.name}" : item.name
+      puts "#{item.quantity} #{name}: #{format_money(line[:total])}"
     end
 
     puts "Sales Taxes: #{format_money(@receipt[:total_tax])}"

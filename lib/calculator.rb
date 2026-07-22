@@ -1,7 +1,8 @@
 require_relative "taxes/sales_tax"
+require_relative "taxes/import_duty"
 
 class Calculator
-  def initialize(items, taxes: [SalesTax.new])
+  def initialize(items, taxes: [SalesTax.new, ImportDuty.new])
     @items = items
     @taxes = taxes
   end
