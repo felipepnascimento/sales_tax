@@ -3,18 +3,24 @@ require_relative "../../lib/models/item"
 
 RSpec.describe Item do
   it "builds a valid item" do
-    item = Item.new(name: "book", quantity: 2, unit_price: 12.49, imported: false)
+    item = Item.new(name: "book", quantity: 2, unit_price: 12.49, imported: false, category: :book)
 
     expect(item.name).to eq("book")
     expect(item.quantity).to eq(2)
     expect(item.unit_price).to eq(12.49)
     expect(item.imported).to eq(false)
+    expect(item.category).to eq(:book)
   end
 
-  it "defaults imported to false" do
+  it "defaults imported to false and category to other" do
     item = Item.new(name: "book", quantity: 1, unit_price: 12.49)
 
     expect(item.imported).to eq(false)
+    expect(item.category).to eq(:other)
+  end
+
+  it "raises when category is invalid" do
+    expect { Item.new(name: "book", quantity: 1, unit_price: 12.49, category: :invalid) }.to raise_error(ArgumentError)
   end
 
   it "raises when name is blank" do

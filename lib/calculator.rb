@@ -1,8 +1,9 @@
-SALES_TAX_RATE = 0.10
+require_relative "taxes/sales_tax"
 
 class Calculator
-  def initialize(items)
+  def initialize(items, taxes: [SalesTax.new])
     @items = items
+    @taxes = taxes
   end
 
   def receipt
@@ -18,16 +19,12 @@ class Calculator
   private
 
   def apply_tax_to(item)
-    tax = round_up_to_nearest_nickel(item.unit_price * SALES_TAX_RATE)
+    tax = @taxes.sum { |tax_rule| tax_rule.amount_for(item) }.round(2)
 
     {
       item: item,
-      tax: (tax * item.quantity).round(2),
-      total: ((item.unit_price + tax) * item.quantity).round(2)
+      tax: tax,
+      total: (item.unit_price * item.quantity + tax).round(2)
     }
-  end
-
-  def round_up_to_nearest_nickel(amount)
-    (amount / 0.05).ceil * 0.05
   end
 end
