@@ -38,6 +38,13 @@ Also fixed `Printer` to prefix imported items with "imported" in the receipt (e.
 
 All three sample inputs now match the challenge's expected output exactly.
 
+## Step 6: Code review fixes
+
+- Moved `NickelRounding` from `lib/taxes/` to `lib/utils/` — it's a shared helper, not a tax rule, and living inside `taxes/` made it look like one.
+- Tightened `Item`'s validation to check types directly (`is_a?(Integer)` / `is_a?(Numeric)`) instead of coercing with `.to_i`/`.to_f`. The coercion was silently accepting garbage (e.g. `"abc".to_f == 0.0` would have passed the `>= 0` check).
+- Decimal format (e.g. "22,22" vs "22.22") is a `Parser` concern, not `Item`'s: the input regex only accepts dot-decimal numbers, so by the time a value reaches `Item` it's already a real `Float`, not a string to reinterpret.
+- Reasoning for having a single model (`Item`): it's the only object with real domain state that needs data-integrity validation. The tax classes hold no per-instance data — they're behavior-only policy objects (strategy pattern), not models. The receipt is a plain Hash rather than a class because it has a single consumer (`Printer`) today; promoting it to a class without a second consumer would be premature.
+
 ## Future Improvements
 
 - Category inference from the item name is keyword-based and not exhaustive. A more robust solution would have the input (or a product catalog) state each item's category explicitly instead of guessing it from text.
